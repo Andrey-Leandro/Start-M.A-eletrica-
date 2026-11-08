@@ -1,0 +1,360 @@
+{% extends 'base.html' %}
+
+{% block title %}Start M.A Elétrica | Climatização e Serviços Elétricos{% endblock %}
+
+{% block head %}
+<meta name="robots" content="index, follow">
+{% endblock %}
+
+{% block content %}
+
+<!-- ===================================================== -->
+<!-- 01. HERO: PRIMEIRA IMPRESSÃO                         -->
+<!-- ===================================================== -->
+<section class="hero" id="inicio" aria-labelledby="titulo-inicio">
+    <div class="container hero-grid">
+
+        <div class="hero-copy reveal">
+            <span class="eyebrow">CLIMATIZAÇÃO • INSTALAÇÕES • MANUTENÇÃO</span>
+
+            <h1 id="titulo-inicio">
+                Soluções em elétrica e climatização para o seu
+                <em>dia a dia.</em>
+            </h1>
+
+            <p>
+                Da instalação de ar-condicionado à manutenção elétrica,
+                a Start M.A Elétrica atende solicitações residenciais,
+                comerciais e industriais, conforme avaliação do serviço.
+            </p>
+
+            <div class="hero-actions">
+                <a class="btn btn-red" href="{{ url_for('orcamento') }}">
+                    Solicitar orçamento <span aria-hidden="true">↗</span>
+                </a>
+                <a class="btn btn-outline" href="#servicos">
+                    Conhecer os serviços
+                </a>
+            </div>
+
+            <p class="hero-note">
+                Base em Jandira — SP • Atendimento mediante disponibilidade.
+            </p>
+        </div>
+
+        <div class="hero-art reveal">
+            <img
+                src="{{ url_for('static', filename='img/imagem-01.jpg') }}"
+                alt="Imagem de apresentação dos serviços da Start M.A Elétrica"
+                width="780"
+                height="950"
+                fetchpriority="high"
+                onerror="this.hidden=true"
+            >
+            <div class="hero-art-label">
+                <span>ENERGIA • CONFORTO • SOLUÇÕES</span>
+                <span aria-hidden="true">↗</span>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+
+<!-- ===================================================== -->
+<!-- 02. SERVIÇOS                                        -->
+<!-- ===================================================== -->
+<section class="section light" id="servicos" aria-labelledby="titulo-servicos">
+    <div class="container">
+
+        <div class="section-heading reveal">
+            <span class="eyebrow red">O QUE FAZEMOS</span>
+            <h2 id="titulo-servicos">Soluções para diferentes necessidades.</h2>
+            <p>
+                Trabalhamos com climatização, instalações e manutenções
+                elétricas. Confira as opções e solicite uma avaliação
+                para o seu serviço.
+            </p>
+        </div>
+
+        {#
+            As informações aparecem automaticamente a partir de
+            SERVICOS, em config/empresa.py.
+            Se o proprietário alterar a lista, esta seção será atualizada.
+        #}
+        {% set descricoes = {
+            'Instalação de ar-condicionado': 'Solicite uma avaliação para instalação de equipamentos de climatização no seu ambiente.',
+            'Manutenção de ar-condicionado': 'Atendimento a solicitações de verificação, ajustes e manutenção de equipamentos.',
+            'Higienização de ar-condicionado': 'Consulte a disponibilidade de limpeza e higienização de sistemas de climatização.',
+            'Instalações elétricas residenciais': 'Serviços de instalação e adequação elétrica para imóveis residenciais.',
+            'Instalações elétricas comerciais': 'Instalações e intervenções elétricas para ambientes comerciais.',
+            'Instalações elétricas industriais': 'Avaliação de demandas elétricas de ambientes e instalações industriais.',
+            'Instalações elétricas': 'Instalações e adequações elétricas conforme as características do local.',
+            'Manutenção elétrica preventiva': 'Solicitações de inspeção e manutenção preventiva de instalações elétricas.',
+            'Manutenção elétrica corretiva': 'Avaliação e correção de problemas em instalações elétricas.',
+            'Manutenção elétrica': 'Avaliação de falhas, reparos e manutenção de instalações elétricas.',
+            'Elétrica industrial': 'Serviços elétricos industriais conforme o escopo e a avaliação técnica.',
+            'Quadros e painéis elétricos': 'Consulte a disponibilidade para serviços em quadros e painéis elétricos.',
+            'Troca de disjuntores e tomadas': 'Solicite avaliação para substituição de componentes elétricos.',
+            'Iluminação e instalação de luminárias': 'Instalação e adequação de pontos de iluminação e luminárias.',
+            'Avaliação técnica e outros serviços': 'Descreva sua necessidade para verificar a possibilidade de atendimento.',
+            'Outros serviços': 'Entre em contato e explique o serviço de que você precisa.'
+        } %}
+
+        <div class="cards">
+            {% for servico in servicos %}
+            <article class="service-card reveal">
+                <span class="service-icon" aria-hidden="true">
+                    {% if 'ar-condicionado' in servico|lower %}
+                        ❄
+                    {% elif 'elétric' in servico|lower or 'disjuntor' in servico|lower %}
+                        ⚡
+                    {% elif 'painel' in servico|lower %}
+                        ▣
+                    {% else %}
+                        ⚙
+                    {% endif %}
+                </span>
+
+                <h3>{{ servico }}</h3>
+                <p>
+                    {{ descricoes.get(servico, 'Consulte a disponibilidade e descreva sua necessidade para uma avaliação.') }}
+                </p>
+            </article>
+            {% endfor %}
+        </div>
+
+        <div class="hero-actions">
+            <a class="btn btn-dark" href="{{ url_for('orcamento') }}">
+                Fazer uma solicitação de orçamento
+                <span aria-hidden="true">↗</span>
+            </a>
+        </div>
+
+    </div>
+</section>
+
+
+<!-- ===================================================== -->
+<!-- 03. COMO FUNCIONA A SOLICITAÇÃO                     -->
+<!-- ===================================================== -->
+<section class="section dark-feature" aria-labelledby="titulo-atendimento">
+    <div class="container feature-grid">
+
+        <div class="reveal">
+            <span class="eyebrow">ATENDIMENTO ORGANIZADO</span>
+            <h2 id="titulo-atendimento">
+                O primeiro passo para o seu serviço começa aqui.
+            </h2>
+            <p>
+                Informe o que precisa, gere sua solicitação em PDF e entre
+                em contato diretamente com a Start M.A Elétrica.
+                A definição de valores e prazos depende de avaliação.
+            </p>
+            <a class="btn btn-red" href="{{ url_for('orcamento') }}">
+                Preencher solicitação <span aria-hidden="true">↗</span>
+            </a>
+        </div>
+
+        <div class="feature-panel reveal">
+            <span>01 / 03</span>
+            <h3>Descreva sua necessidade</h3>
+            <p>
+                Informe o serviço desejado, seus dados de contato e uma
+                breve descrição do que precisa ser realizado.
+            </p>
+
+            <hr>
+
+            <span>02 / 03</span>
+            <h3>Gere seu documento</h3>
+            <p>
+                Baixe um PDF com as informações da solicitação e os dados
+                de identificação da empresa.
+            </p>
+
+            <hr>
+
+            <span>03 / 03</span>
+            <h3>Entre em contato</h3>
+            <p>
+                Converse pelo WhatsApp para verificar a disponibilidade
+                e os próximos passos do atendimento.
+            </p>
+        </div>
+
+    </div>
+</section>
+
+
+<!-- ===================================================== -->
+<!-- 04. GALERIA — IMAGENS 01 A 09                       -->
+<!-- ===================================================== -->
+<section class="section light" id="projetos" aria-labelledby="titulo-projetos">
+    <div class="container">
+
+        <div class="section-heading reveal">
+            <span class="eyebrow red">GALERIA</span>
+            <h2 id="titulo-projetos">Conheça nossa área de atuação.</h2>
+            <p>
+                Imagens selecionadas para apresentar o universo dos
+                serviços de elétrica e climatização.
+            </p>
+        </div>
+
+        <div class="gallery">
+            {% for numero in range(1, 10) %}
+                {% set arquivo = 'img/imagem-%02d.jpg'|format(numero) %}
+
+                <button
+                    class="gallery-item reveal"
+                    type="button"
+                    data-image="{{ url_for('static', filename=arquivo) }}"
+                    aria-label="Ampliar imagem {{ '%02d'|format(numero) }} da galeria"
+                >
+                    <img
+                        src="{{ url_for('static', filename=arquivo) }}"
+                        alt="Imagem {{ '%02d'|format(numero) }} do acervo visual"
+                        width="600"
+                        height="600"
+                        loading="lazy"
+                        decoding="async"
+                        onerror="this.closest('.gallery-item').hidden=true"
+                    >
+                    <span>Ampliar imagem <span aria-hidden="true">↗</span></span>
+                </button>
+            {% endfor %}
+        </div>
+
+    </div>
+</section>
+
+
+<!-- ===================================================== -->
+<!-- 05. SOBRE A EMPRESA                                 -->
+<!-- ===================================================== -->
+<section class="section about" id="sobre" aria-labelledby="titulo-sobre">
+    <div class="container about-grid">
+
+        <div class="about-visual reveal">
+            <img
+                src="{{ url_for('static', filename='img/imagem-09.jpg') }}"
+                alt="Imagem do acervo visual da Start M.A Elétrica"
+                width="700"
+                height="800"
+                loading="lazy"
+                decoding="async"
+                onerror="this.hidden=true"
+            >
+        </div>
+
+        <div class="reveal">
+            <span class="eyebrow red">QUEM SOMOS</span>
+            <h2 id="titulo-sobre">Start M.A Elétrica</h2>
+            <p>
+                Com base em Jandira, São Paulo, a Start M.A Elétrica atua
+                com foco em climatização, instalações e manutenções
+                elétricas em geral.
+            </p>
+            <p>
+                Nosso objetivo é compreender a necessidade de cada
+                solicitação e orientar o atendimento conforme o serviço
+                e a disponibilidade da empresa.
+            </p>
+            <p>
+                Para conhecer as possibilidades de atendimento, entre
+                em contato e conte o que você precisa.
+            </p>
+            <a
+                class="btn btn-dark"
+                href="https://wa.me/{{ empresa.whatsapp }}?text=Ol%C3%A1%21%20Gostaria%20de%20saber%20mais%20sobre%20os%20servi%C3%A7os."
+                target="_blank"
+                rel="noopener noreferrer"
+            >
+                Conversar pelo WhatsApp <span aria-hidden="true">↗</span>
+            </a>
+        </div>
+
+    </div>
+</section>
+
+
+<!-- ===================================================== -->
+<!-- 06. FERRAMENTA: CALCULADORA DE CONSUMO              -->
+<!-- ===================================================== -->
+<section class="section calculator-promo" aria-labelledby="titulo-calculadora">
+    <div class="container promo-grid">
+
+        <div class="reveal">
+            <span class="eyebrow">FERRAMENTA DIGITAL</span>
+            <h2 id="titulo-calculadora">
+                Você sabe quanto um equipamento consome?
+            </h2>
+            <p>
+                Utilize nossa calculadora para estimar o consumo de
+                energia em kWh e o custo mensal aproximado.
+            </p>
+        </div>
+
+        <a class="btn btn-red" href="{{ url_for('calculadora') }}">
+            Acessar calculadora <span aria-hidden="true">↗</span>
+        </a>
+
+    </div>
+</section>
+
+
+<!-- ===================================================== -->
+<!-- 07. CONTATO E CONVERSÃO                             -->
+<!-- ===================================================== -->
+<section class="section light" id="contato" aria-labelledby="titulo-contato">
+    <div class="container">
+
+        <div class="contact-panel reveal">
+            <div>
+                <span class="eyebrow red">VAMOS CONVERSAR?</span>
+                <h2 id="titulo-contato">Conte com a Start M.A Elétrica.</h2>
+                <p>
+                    Precisa de climatização ou serviços elétricos?
+                    Faça uma solicitação ou fale diretamente pelo
+                    WhatsApp {{ empresa.telefone }}.
+                </p>
+            </div>
+
+            <div class="contact-actions">
+                <a class="btn btn-red" href="{{ url_for('orcamento') }}">
+                    Solicitar orçamento
+                </a>
+                <a
+                    class="btn btn-dark"
+                    href="https://wa.me/{{ empresa.whatsapp }}?text=Ol%C3%A1%21%20Gostaria%20de%20solicitar%20um%20atendimento."
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    Chamar no WhatsApp <span aria-hidden="true">↗</span>
+                </a>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+
+<!-- ===================================================== -->
+<!-- 08. VISUALIZAÇÃO AMPLIADA DA GALERIA                -->
+<!-- Funciona com o arquivo static/js/main.js           -->
+<!-- ===================================================== -->
+<dialog
+    id="lightbox"
+    class="lightbox"
+    aria-label="Visualização ampliada de imagem da galeria"
+>
+    <button
+        type="button"
+        class="lightbox-close"
+        aria-label="Fechar imagem ampliada"
+    >×</button>
+    <img alt="Imagem ampliada da galeria">
+</dialog>
+
+{% endblock %}

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#101F36">
+    <meta name="description" content="{{ empresa.get('descricao_site', 'Start M.A Elétrica: climatização, instalações e manutenções elétricas em Jandira e região.') }}">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="{{ empresa.get('titulo_site', 'Start M.A Elétrica | Elétrica e Climatização') }}">
+    <meta property="og:description" content="{{ empresa.get('descricao_site', 'Serviços de elétrica e climatização em Jandira e região.') }}">
+
+    <title>{% block title %}{{ empresa.get('titulo_site', 'Start M.A Elétrica') }}{% endblock %}</title>
+
+    <!-- Fontes da identidade visual -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- CSS compartilhado por todas as páginas -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+    <!-- Espaço reservado para estilos/metadados de páginas específicas -->
+    {% block head %}{% endblock %}
+</head>
+<body class="page-{{ request.endpoint or 'default' }}">
+
+    <!-- Acesso rápido para quem navega por teclado -->
+    <a class="skip-link" href="#conteudo-principal">Pular para o conteúdo</a>
+
+    <!-- CABEÇALHO -->
+    <header class="site-header" id="topo">
+        <div class="container nav-row">
+
+            <!-- Marca da empresa: o texto continua visível se a logo faltar -->
+            <a class="brand" href="{{ url_for('inicio') }}" aria-label="Start M.A Elétrica — página inicial">
+                <img
+                    src="{{ url_for('static', filename=empresa.get('logo', 'img/logotipo.png')) }}"
+                    alt=""
+                    width="44"
+                    height="44"
+                    onerror="this.hidden=true"
+                >
+                <span>
+                    START <b>M.A</b>
+                    <small>ELÉTRICA</small>
+                </span>
+            </a>
+
+            <!-- Abertura e fechamento feitos por static/js/main.js -->
+            <button
+                class="menu-toggle"
+                type="button"
+                aria-label="Abrir menu"
+                aria-expanded="false"
+                aria-controls="nav-menu"
+            >☰</button>
+
+            <nav class="nav-menu" id="nav-menu" aria-label="Navegação principal">
+                <a href="{{ url_for('inicio') }}#inicio">Início</a>
+                <a href="{{ url_for('inicio') }}#servicos">Serviços</a>
+                <a href="{{ url_for('inicio') }}#projetos">Projetos</a>
+                <a href="{{ url_for('inicio') }}#sobre">Sobre</a>
+                <a href="{{ url_for('calculadora') }}" {% if request.endpoint == 'calculadora' %}aria-current="page"{% endif %}>Calculadora</a>
+                <a class="btn btn-red nav-cta" href="{{ url_for('orcamento') }}" {% if request.endpoint == 'orcamento' %}aria-current="page"{% endif %}>
+                    Pedir orçamento
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- CONTEÚDO INDIVIDUAL DE CADA PÁGINA -->
+    <main id="conteudo-principal" tabindex="-1">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- RODAPÉ -->
+    <footer class="footer">
+        <div class="container footer-grid">
+            <div>
+                <h3>{{ empresa.nome }}</h3>
+                <p>
+                    Climatização, instalações e manutenções elétricas.
+                    Entre em contato para consultar a disponibilidade de atendimento.
+                </p>
+            </div>
+
+            <div>
+                <h3>Contato</h3>
+                <p>{{ empresa.telefone }}</p>
+                <p>Jandira — São Paulo</p>
+                <a
+                    href="https://wa.me/{{ empresa.whatsapp }}"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >Falar pelo WhatsApp</a>
+            </div>
+
+            <div>
+                <h3>Informações da empresa</h3>
+                <p>{{ empresa.razao_social }}</p>
+                <p>CNPJ: {{ empresa.cnpj }}</p>
+                <a href="{{ url_for('orcamento') }}">Solicitar orçamento</a>
+            </div>
+        </div>
+
+        <div class="container footer-bottom">
+            © <span id="ano">2026</span> {{ empresa.nome }}. Todos os direitos reservados.
+        </div>
+    </footer>
+
+    <!-- ATALHO FLUTUANTE DE CONTATO -->
+    <a
+        class="whatsapp-float"
+        href="https://wa.me/{{ empresa.whatsapp }}?text=Ol%C3%A1%21%20Gostaria%20de%20solicitar%20um%20atendimento."
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Conversar com a Start M.A Elétrica pelo WhatsApp"
+    >WhatsApp ↗</a>
+
+    <!-- JavaScript compartilhado por todas as páginas -->
+    <script src="{{ url_for('static', filename='js/main.js') }}" defer></script>
+
+    <!-- JavaScript específico de cada página -->
+    {% block scripts %}{% endblock %}
+</body>
+</html>

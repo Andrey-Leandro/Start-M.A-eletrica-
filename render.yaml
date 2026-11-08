@@ -1,0 +1,12 @@
+# Blueprint do Render: hospeda todo o site Python em um unico serviço.
+services:
+  - type: web
+    name: start-ma-eletrica
+    runtime: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn app:app
+    healthCheckPath: /
+    envVars:
+      - key: SECRET_KEY
+        generateValue: true

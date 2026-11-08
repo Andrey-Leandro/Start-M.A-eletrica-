@@ -1,0 +1,221 @@
+{% extends 'base.html' %}
+
+{% block title %}Calculadora de Consumo de Energia | Start M.A Elétrica{% endblock %}
+
+{% block head %}
+<meta name="robots" content="index, follow">
+{% endblock %}
+
+{% block content %}
+
+<!-- ===================================================== -->
+<!-- 01. APRESENTAÇÃO DA FERRAMENTA                        -->
+<!-- ===================================================== -->
+<section class="page-banner" aria-labelledby="titulo-calculadora">
+    <div class="container">
+        <span class="eyebrow">START M.A ELÉTRICA • FERRAMENTA GRATUITA</span>
+        <h1 id="titulo-calculadora">Calculadora de consumo elétrico.</h1>
+        <p>
+            Descubra uma estimativa de quanta energia um aparelho consome
+            e quanto esse uso pode representar no mês.
+        </p>
+    </div>
+</section>
+
+<!-- ===================================================== -->
+<!-- 02. FORMULÁRIO E RESULTADOS                           -->
+<!-- ===================================================== -->
+<section class="section light" aria-labelledby="titulo-simulacao">
+    <div class="container calc-layout">
+
+        <!-- Esquerda: dados do equipamento -->
+        <form id="calc-form" class="form-card">
+            <span class="eyebrow red">SIMULAÇÃO DE ENERGIA</span>
+            <h2 id="titulo-simulacao">Informe os dados do aparelho.</h2>
+            <p>
+                Use a potência indicada na etiqueta ou no manual.
+                O cálculo considera uma potência constante durante o uso.
+            </p>
+
+            <div class="calc-field">
+                <label for="potencia">Potência do aparelho (W) *</label>
+                <input
+                    type="number"
+                    id="potencia"
+                    name="potencia"
+                    min="1"
+                    step="any"
+                    value="1500"
+                    inputmode="decimal"
+                    required
+                    aria-describedby="ajuda-potencia"
+                >
+                <small id="ajuda-potencia" class="field-help">
+                    Exemplo: um aparelho de 1.500 W equivale a 1,5 kW.
+                </small>
+            </div>
+
+            <div class="calc-field">
+                <label for="horas">Horas de uso por dia *</label>
+                <input
+                    type="number"
+                    id="horas"
+                    name="horas"
+                    min="0"
+                    max="24"
+                    step="any"
+                    value="2"
+                    inputmode="decimal"
+                    required
+                    aria-describedby="ajuda-horas"
+                >
+                <small id="ajuda-horas" class="field-help">
+                    Pode usar valores decimais. Exemplo: 1,5 h = 1 hora e 30 minutos.
+                </small>
+            </div>
+
+            <div class="calc-field">
+                <label for="dias">Dias de uso no período *</label>
+                <input
+                    type="number"
+                    id="dias"
+                    name="dias"
+                    min="1"
+                    max="31"
+                    step="1"
+                    value="30"
+                    inputmode="numeric"
+                    required
+                    aria-describedby="ajuda-dias"
+                >
+                <small id="ajuda-dias" class="field-help">
+                    Digite de 1 a 31 dias. O padrão é 30 dias.
+                </small>
+            </div>
+
+            <div class="calc-field">
+                <label for="tarifa">Tarifa de energia (R$/kWh) *</label>
+                <input
+                    type="number"
+                    id="tarifa"
+                    name="tarifa"
+                    min="0"
+                    step="any"
+                    value="0.95"
+                    inputmode="decimal"
+                    required
+                    aria-describedby="ajuda-tarifa"
+                >
+                <small id="ajuda-tarifa" class="field-help">
+                    R$ 0,95 é apenas um exemplo, não uma tarifa oficial.
+                    Consulte sua fatura para informar o valor aplicável.
+                </small>
+            </div>
+
+            <button type="submit" class="btn btn-red full" id="btn-calcular">
+                Calcular consumo <span aria-hidden="true">↗</span>
+            </button>
+
+            <noscript>
+                <p class="privacy-note">
+                    Ative o JavaScript no navegador para usar esta calculadora.
+                </p>
+            </noscript>
+
+            <p class="privacy-note">
+                A simulação é feita no seu navegador e não envia estes
+                números ao servidor da empresa.
+            </p>
+        </form>
+
+        <!-- Direita: resultado da simulação -->
+        <div class="calc-results">
+            <section class="result-card" aria-labelledby="titulo-resultado">
+                <span class="eyebrow">RESULTADO ESTIMADO</span>
+                <h2 id="titulo-resultado">Seu consumo no período.</h2>
+
+                <p>Energia consumida</p>
+                <strong
+                    id="resultado-kwh"
+                    role="status"
+                    aria-live="polite"
+                    aria-atomic="true"
+                >— kWh</strong>
+
+                <hr>
+
+                <p>Custo estimado de energia</p>
+                <strong
+                    id="resultado-valor"
+                    role="status"
+                    aria-live="polite"
+                    aria-atomic="true"
+                >—</strong>
+
+                <small>
+                    Valores aproximados. O resultado depende da potência
+                    informada, do tempo de uso e da tarifa escolhida.
+                    Tributos, bandeiras e outras cobranças só estarão
+                    refletidos se estiverem incluídos na tarifa usada.
+                </small>
+            </section>
+
+            <aside class="side-info" aria-labelledby="titulo-entenda">
+                <span class="eyebrow red">ENTENDA O CÁLCULO</span>
+                <h2 id="titulo-entenda">Como chegamos ao resultado?</h2>
+                <p>
+                    Primeiro transformamos watts em quilowatts.
+                    Depois multiplicamos pelas horas e pelos dias de uso.
+                    Por fim, aplicamos a tarifa de energia informada.
+                </p>
+                <div class="info-box">
+                    <strong>Consumo (kWh)</strong>
+                    <p>Potência (W) ÷ 1.000 × horas por dia × dias</p>
+                    <strong>Custo estimado (R$)</strong>
+                    <p>Consumo (kWh) × tarifa (R$/kWh)</p>
+                </div>
+            </aside>
+        </div>
+    </div>
+</section>
+
+<!-- ===================================================== -->
+<!-- 03. ORIENTAÇÃO E CONTATO                              -->
+<!-- ===================================================== -->
+<section class="section dark-feature" aria-labelledby="titulo-ajuda">
+    <div class="container feature-grid">
+        <div>
+            <span class="eyebrow">PRECISA DE AJUDA?</span>
+            <h2 id="titulo-ajuda">Elétrica e climatização com atendimento personalizado.</h2>
+            <p>
+                A calculadora é uma ferramenta educativa.
+                Para dúvidas sobre instalações, manutenção elétrica ou
+                ar-condicionado, descreva sua necessidade para a equipe.
+            </p>
+            <a class="btn btn-red" href="{{ url_for('orcamento') }}">
+                Solicitar orçamento <span aria-hidden="true">↗</span>
+            </a>
+        </div>
+
+        <div class="feature-panel">
+            <span>IMPORTANTE</span>
+            <h3>O consumo real pode variar.</h3>
+            <p>
+                Equipamentos como ar-condicionado e refrigeradores podem
+                alternar períodos de maior e menor potência. Por isso,
+                a estimativa não substitui medições nem o valor da fatura.
+            </p>
+            <hr>
+            <span>CONTATO</span>
+            <h3>{{ empresa.nome }}</h3>
+            <p>{{ empresa.telefone }} • Jandira — SP</p>
+        </div>
+    </div>
+</section>
+
+{% endblock %}
+
+{% block scripts %}
+<!-- O JS faz os cálculos e atualiza os dois resultados na tela. -->
+<script src="{{ url_for('static', filename='js/calculadora.js') }}" defer></script>
+{% endblock %}

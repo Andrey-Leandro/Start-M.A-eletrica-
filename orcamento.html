@@ -1,0 +1,243 @@
+{% extends 'base.html' %}
+
+{% block title %}Solicitar Orçamento | Start M.A Elétrica{% endblock %}
+
+{% block head %}
+<meta name="robots" content="index, follow">
+{% endblock %}
+
+{% block content %}
+
+<!-- ===================================================== -->
+<!-- 01. APRESENTAÇÃO DA PÁGINA                             -->
+<!-- ===================================================== -->
+<section class="page-banner" aria-labelledby="titulo-orcamento">
+    <div class="container">
+        <span class="eyebrow">START M.A ELÉTRICA • ATENDIMENTO</span>
+
+        <h1 id="titulo-orcamento">Solicite seu orçamento.</h1>
+
+        <p>
+            Conte o que você precisa e gere um documento em PDF com
+            os detalhes da sua solicitação. É simples e sem compromisso.
+        </p>
+    </div>
+</section>
+
+<!-- ===================================================== -->
+<!-- 02. FORMULÁRIO E ORIENTAÇÕES                           -->
+<!-- ===================================================== -->
+<section class="section light" aria-labelledby="titulo-formulario">
+    <div class="container form-layout">
+
+        <!-- Coluna principal: formulário -->
+        <div class="form-card">
+            <span class="eyebrow red">PASSO 01 — SEUS DADOS</span>
+            <h2 id="titulo-formulario">Conte-nos sobre o serviço.</h2>
+            <p>
+                Preencha os campos abaixo para criar sua solicitação.
+                Os campos marcados com * são obrigatórios.
+            </p>
+
+            <!--
+                O arquivo static/js/orcamento.js vai:
+                1. Validar os campos.
+                2. Enviar JSON para /api/orcamento/pdf.
+                3. Baixar o PDF retornado pelo Flask.
+                4. Montar uma mensagem para o WhatsApp.
+            -->
+            <form id="form-orcamento" novalidate>
+
+                <label for="nome">Nome completo *</label>
+                <input
+                    type="text"
+                    id="nome"
+                    name="nome"
+                    placeholder="Ex.: Maria da Silva"
+                    autocomplete="name"
+                    minlength="2"
+                    maxlength="100"
+                    required
+                    aria-describedby="ajuda-nome"
+                >
+                <small id="ajuda-nome" class="field-help">
+                    Informe o nome que aparecerá no documento.
+                </small>
+
+                <label for="telefone">Telefone ou WhatsApp *</label>
+                <input
+                    type="tel"
+                    id="telefone"
+                    name="telefone"
+                    placeholder="Ex.: (11) 99999-9999"
+                    autocomplete="tel"
+                    inputmode="tel"
+                    minlength="8"
+                    maxlength="30"
+                    required
+                    aria-describedby="ajuda-telefone"
+                >
+                <small id="ajuda-telefone" class="field-help">
+                    Informe um número para eventual contato.
+                </small>
+
+                <label for="cidade">Cidade e bairro do atendimento *</label>
+                <input
+                    type="text"
+                    id="cidade"
+                    name="cidade"
+                    placeholder="Ex.: Jandira — Jardim Aurora"
+                    autocomplete="address-level2"
+                    maxlength="100"
+                    required
+                    aria-describedby="ajuda-cidade"
+                >
+                <small id="ajuda-cidade" class="field-help">
+                    Não é necessário informar seu endereço completo.
+                </small>
+
+                <label for="servico">Serviço desejado *</label>
+                <select
+                    id="servico"
+                    name="servico"
+                    required
+                    aria-describedby="ajuda-servico"
+                >
+                    <option value="" selected disabled>
+                        Selecione o tipo de serviço
+                    </option>
+                    {% for servico in servicos %}
+                    <option value="{{ servico }}">{{ servico }}</option>
+                    {% endfor %}
+                </select>
+                <small id="ajuda-servico" class="field-help">
+                    Escolha a opção mais próxima da sua necessidade.
+                </small>
+
+                <label for="descricao">Descreva sua necessidade *</label>
+                <textarea
+                    id="descricao"
+                    name="descricao"
+                    rows="6"
+                    minlength="10"
+                    maxlength="1500"
+                    required
+                    placeholder="Ex.: Preciso avaliar a instalação de um ar-condicionado em uma sala comercial. Gostaria de saber como funciona a visita técnica."
+                    aria-describedby="ajuda-descricao"
+                ></textarea>
+                <small id="ajuda-descricao" class="field-help">
+                    Até 1.500 caracteres. Não informe senhas, CPF ou dados sensíveis.
+                </small>
+
+                <!-- O aceite não recebe 'name' e não integra o JSON do PDF. -->
+                <div class="form-consent">
+                    <label for="ciente">
+                        <input type="checkbox" id="ciente" required>
+                        Estou ciente de que este formulário gera uma
+                        <strong>solicitação de orçamento</strong>, e não
+                        um preço ou agendamento confirmado. *
+                    </label>
+                </div>
+
+                <p class="privacy-note">
+                    Os dados serão enviados ao servidor para gerar o PDF.
+                    Este sistema não utiliza banco de dados nem cria
+                    um histórico de solicitações.
+                </p>
+
+                <!-- Mensagens de sucesso, erro e carregamento -->
+                <div
+                    id="form-status"
+                    class="form-status"
+                    role="status"
+                    aria-live="polite"
+                    aria-atomic="true"
+                ></div>
+
+                <!-- Botões usados pelo JavaScript -->
+                <button
+                    type="submit"
+                    class="btn btn-red full"
+                    id="btn-pdf"
+                >
+                    Gerar solicitação em PDF ↓
+                </button>
+
+                <button
+                    type="button"
+                    class="btn btn-dark full"
+                    id="btn-whatsapp"
+                >
+                    Preparar mensagem para WhatsApp ↗
+                </button>
+
+                <p class="privacy-note">
+                    O PDF é baixado para seu dispositivo. Para encaminhá-lo
+                    à empresa, anexe o arquivo manualmente no WhatsApp.
+                    Gerar o PDF não envia o pedido automaticamente.
+                </p>
+            </form>
+        </div>
+
+        <!-- Coluna lateral: orientações -->
+        <aside class="side-info" aria-labelledby="titulo-como-funciona">
+            <span class="eyebrow red">PASSO A PASSO</span>
+            <h2 id="titulo-como-funciona">Como funciona?</h2>
+            <p>
+                A solicitação ajuda a organizar as informações para
+                o primeiro contato com a Start M.A Elétrica.
+            </p>
+
+            <ol class="form-steps">
+                <li>
+                    <strong>Informe os dados.</strong>
+                    <p>Escolha o serviço e descreva o que precisa.</p>
+                </li>
+                <li>
+                    <strong>Baixe o PDF.</strong>
+                    <p>Receba um resumo com seus dados e os da empresa.</p>
+                </li>
+                <li>
+                    <strong>Entre em contato.</strong>
+                    <p>
+                        Abra o WhatsApp e envie a mensagem preparada.
+                        Se desejar, anexe o PDF à conversa.
+                    </p>
+                </li>
+            </ol>
+
+            <div class="info-box">
+                <strong>{{ empresa.nome }}</strong>
+                <p>{{ empresa.segmento | default('Elétrica e climatização') }}</p>
+                <p><strong>WhatsApp:</strong> {{ empresa.telefone }}</p>
+                <p><strong>Base:</strong> Jandira — SP</p>
+                <a
+                    href="https://wa.me/{{ empresa.whatsapp }}"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    Conversar diretamente pelo WhatsApp ↗
+                </a>
+            </div>
+
+            <div class="budget-disclaimer">
+                <h3>Informação importante</h3>
+                <p>
+                    Este documento não informa preços nem representa
+                    proposta comercial, contrato ou confirmação de visita.
+                    Valores, prazos e disponibilidade são definidos
+                    pela empresa após avaliação.
+                </p>
+            </div>
+        </aside>
+    </div>
+</section>
+
+{% endblock %}
+
+{% block scripts %}
+<script
+    src="{{ url_for('static', filename='js/orcamento.js') }}"
+    defer
+></script>
+{% endblock %}
